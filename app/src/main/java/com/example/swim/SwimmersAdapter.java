@@ -46,6 +46,7 @@ public class SwimmersAdapter extends RecyclerView.Adapter<SwimmersAdapter.ViewHo
     public int getItemCount() {
         return swimmersList.size();
     }
+
     public void setSwimmersList(List<MainActivity.Swimmer> swimmersList) {
         this.swimmersList = swimmersList;
         notifyDataSetChanged();

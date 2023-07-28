@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextSearchYear;
     private SharedPreferences sharedPreferences;
     private static final String SHARED_PREFS_KEY = "swimmers_list_key";
+    EditText editTextSurname, editTextName, editTextTime, editTextBirthYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sharedPreferences = getSharedPreferences(SHARED_PREFS_KEY, MODE_PRIVATE);
 
+        editTextSurname = findViewById(R.id.editTextSurname);
+        editTextName = findViewById(R.id.editTextName);
+        editTextTime = findViewById(R.id.editTextTime);
+        editTextBirthYear = findViewById(R.id.editTextBirthYear);
         recyclerView = findViewById(R.id.recyclerView);
         editTextSearchYear = findViewById(R.id.editTextSearchYear);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -40,15 +45,25 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         restoreSwimmersList();
     }
+
     private void restoreSwimmersList() {
         String jsonList = sharedPreferences.getString("swimmers_list", "");
         if (!jsonList.isEmpty()) {
             Gson gson = new Gson();
-            Type type = new TypeToken<List<Swimmer>>(){}.getType();
+            Type type = new TypeToken<List<Swimmer>>() {
+            }.getType();
             swimmersList = gson.fromJson(jsonList, type);
             adapter.setSwimmersList(swimmersList);
         }
     }
+
+    public void onClearButtonClick(View view) {
+        swimmersList.clear();
+        adapter.notifyDataSetChanged();
+        saveSwimmersList();
+    }
+
+
     private void saveSwimmersList() {
         Gson gson = new Gson();
         String jsonList = gson.toJson(swimmersList);
@@ -56,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("swimmers_list", jsonList);
         editor.apply();
     }
+
     public void onSearchButtonClick(View view) {
         String searchYearString = editTextSearchYear.getText().toString();
         if (searchYearString.isEmpty()) {
@@ -63,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
             adapter.setSwimmersList(swimmersList);
         } else {
             // Иначе, ищем участников по заданному году рождения
-            int searchYear = Integer.parseInt(searchYearString);
+
             List<Swimmer> searchResults = new ArrayList<>();
             for (Swimmer swimmer : swimmersList) {
-                if (swimmer.getBirthYear() == searchYear) {
+                if (swimmer.getBirthYear().equals(searchYearString)) {
                     searchResults.add(swimmer);
                 }
             }
@@ -74,50 +90,68 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isValidate() {
+        if (editTextSurname.getText().toString().isEmpty()) {
+            editTextSurname.setError("Введите");
+            return false;
+        } else if (editTextName.getText().toString().isEmpty()) {
+            editTextName.setError("Введите");
+            return false;
+        } else if (editTextBirthYear.getText().toString().isEmpty()) {
+            editTextBirthYear.setError("Введите");
+            return false;
+        } else if (editTextTime.getText().toString().isEmpty()) {
+            editTextTime.setError("Введите");
+            return false;
+        } else return true;
+    }
+
     public void onAddButtonClick(View view) {
-        EditText editTextSurname = findViewById(R.id.editTextSurname);
-        EditText editTextName = findViewById(R.id.editTextName);
-        EditText editTextTime = findViewById(R.id.editTextTime);
-        EditText editTextBirthYear = findViewById(R.id.editTextBirthYear);
 
-        String surname = editTextSurname.getText().toString();
-        String name = editTextName.getText().toString();
-        String timeString = editTextTime.getText().toString();
-        double time;
-        if (timeString.contains(":")) {
-            // Время в формате мм:сс.СС
-            String[] timeParts = timeString.split(":");
-            int minutes = Integer.parseInt(timeParts[0]);
-            double seconds = Double.parseDouble(timeParts[1]);
-            time = minutes * 60 + seconds;
-        } else {
-            // Время в формате сс.СС
-            time = Double.parseDouble(timeString);
-        }
-        int birthYear = Integer.parseInt(editTextBirthYear.getText().toString());
-
-        Swimmer swimmer = new Swimmer(surname, name, time, birthYear);
-        swimmersList.add(swimmer);
-
-        // Сортировка списка по возрастанию времени заплыва
-        Collections.sort(swimmersList, new Comparator<Swimmer>() {
-            @Override
-            public int compare(Swimmer swimmer1, Swimmer swimmer2) {
-                return Double.compare(swimmer1.getTime(), swimmer2.getTime());
+        if (isValidate()) {
+            String surname = editTextSurname.getText().toString();
+            String name = editTextName.getText().toString();
+            String timeString = editTextTime.getText().toString();
+            double time;
+            if (timeString.contains(":")) {
+                // Время в формате мм:сс.СС
+                String[] timeParts = timeString.split(":");
+                int minutes = Integer.parseInt(timeParts[0]);
+                double seconds = Double.parseDouble(timeParts[1]);
+                time = minutes * 60 + seconds;
+            } else {
+                // Время в формате сс.СС
+                time = Double.parseDouble(timeString);
             }
-        });
+            String birthYear = editTextBirthYear.getText().toString();
 
-        adapter.notifyDataSetChanged();
-        saveSwimmersList();
+            Swimmer swimmer = new Swimmer(surname, name, time, birthYear);
+            swimmersList.add(swimmer);
+
+            // Сортировка списка по возрастанию времени заплыва
+            Collections.sort(swimmersList, new Comparator<Swimmer>() {
+                @Override
+                public int compare(Swimmer swimmer1, Swimmer swimmer2) {
+                    return Double.compare(swimmer1.getTime(), swimmer2.getTime());
+                }
+            });
+
+            adapter.notifyDataSetChanged();
+            saveSwimmersList();
+            editTextSurname.setText("");
+            editTextName.setText("");
+            editTextTime.setText("");
+            editTextBirthYear.setText("");
+        }
     }
 
     class Swimmer {
         private String surname;
         private String name;
         private double time;
-        private int birthYear;
+        private String birthYear;
 
-        public Swimmer(String surname, String name, double time, int birthYear) {
+        public Swimmer(String surname, String name, double time, String birthYear) {
             this.surname = surname;
             this.name = name;
             this.time = time;
@@ -136,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             return time;
         }
 
-        public int getBirthYear() {
+        public String getBirthYear() {
             return birthYear;
         }
     }

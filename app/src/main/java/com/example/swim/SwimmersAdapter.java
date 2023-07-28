@@ -30,8 +30,16 @@ public class SwimmersAdapter extends RecyclerView.Adapter<SwimmersAdapter.ViewHo
         MainActivity.Swimmer swimmer = swimmersList.get(position);
         holder.textViewNumber.setText(String.valueOf(position + 1)); // Нумерация начинается с 1
         holder.textViewName.setText(swimmer.getSurname() + " " + swimmer.getName());
-        holder.textViewTime.setText(swimmer.getTime() + " сек");
-        holder.textViewBirthYear.setText("Год рождения: " + swimmer.getBirthYear());
+        String formattedTime = formatTime(swimmer.getTime());
+        holder.textViewTime.setText(formattedTime);
+        holder.textViewBirthYear.setText("г.р.: " + swimmer.getBirthYear());
+    }
+
+    private String formatTime(double time) {
+        int minutes = (int) time / 60;
+        int seconds = (int) time % 60;
+        int milliseconds = (int) ((time - (int) time) * 100);
+        return String.format("%02d:%02d.%02d", minutes, seconds, milliseconds);
     }
 
     @Override

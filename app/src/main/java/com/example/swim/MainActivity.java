@@ -82,7 +82,18 @@ public class MainActivity extends AppCompatActivity {
 
         String surname = editTextSurname.getText().toString();
         String name = editTextName.getText().toString();
-        double time = Double.parseDouble(editTextTime.getText().toString());
+        String timeString = editTextTime.getText().toString();
+        double time;
+        if (timeString.contains(":")) {
+            // Время в формате мм:сс.СС
+            String[] timeParts = timeString.split(":");
+            int minutes = Integer.parseInt(timeParts[0]);
+            double seconds = Double.parseDouble(timeParts[1]);
+            time = minutes * 60 + seconds;
+        } else {
+            // Время в формате сс.СС
+            time = Double.parseDouble(timeString);
+        }
         int birthYear = Integer.parseInt(editTextBirthYear.getText().toString());
 
         Swimmer swimmer = new Swimmer(surname, name, time, birthYear);

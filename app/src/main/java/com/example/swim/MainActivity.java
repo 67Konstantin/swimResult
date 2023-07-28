@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -113,15 +114,18 @@ public class MainActivity extends AppCompatActivity {
             String name = editTextName.getText().toString();
             String timeString = editTextTime.getText().toString();
             double time;
-            if (timeString.contains(":")) {
+            String[] qwerty = timeString.split("\\.");
+            if (qwerty.length>2) {
                 // Время в формате мм:сс.СС
-                String[] timeParts = timeString.split(":");
+                String[] timeParts = timeString.split("\\.");
                 int minutes = Integer.parseInt(timeParts[0]);
-                double seconds = Double.parseDouble(timeParts[1]);
+                String abc = timeParts[1]+"."+timeParts[2];
+                double seconds = Double.parseDouble(abc);
                 time = minutes * 60 + seconds;
             } else {
                 // Время в формате сс.СС
                 time = Double.parseDouble(timeString);
+
             }
             String birthYear = editTextBirthYear.getText().toString();
 
@@ -138,10 +142,10 @@ public class MainActivity extends AppCompatActivity {
 
             adapter.notifyDataSetChanged();
             saveSwimmersList();
-            editTextSurname.setText("");
-            editTextName.setText("");
-            editTextTime.setText("");
-            editTextBirthYear.setText("");
+//            editTextSurname.setText("");
+//            editTextName.setText("");
+//            editTextTime.setText("");
+//            editTextBirthYear.setText("");
         }
     }
 

@@ -26,7 +26,8 @@
         android:layout_centerHorizontal="true"
         android:hint="Фамилия"
         android:inputType="textPersonName"
-        android:layout_marginRight="12dp"/>
+        android:layout_marginRight="12dp"
+        android:text="123"/>
 
     <EditText
         android:id="@+id/editTextName"
@@ -35,7 +36,8 @@
         android:layout_below="@id/editTextSurname"
         android:layout_centerHorizontal="true"
         android:hint="Имя"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:text="123"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llGrTime"
@@ -51,7 +53,8 @@
         android:layout_marginTop="4dp"
         android:hint="г.р."
         android:inputType="number"
-        android:layout_marginRight="12dp"/>
+        android:layout_marginRight="12dp"
+        android:text="123"/>
 
     <EditText
         android:id="@+id/editTextTime"

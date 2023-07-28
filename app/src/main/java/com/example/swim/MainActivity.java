@@ -1,11 +1,14 @@
 package com.example.swim;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClearButtonClick(View view) {
-        swimmersList.clear();
-        adapter.notifyDataSetChanged();
-        saveSwimmersList();
+        showAlertDialog("");
     }
 
 
@@ -89,6 +90,29 @@ public class MainActivity extends AppCompatActivity {
             }
             adapter.setSwimmersList(searchResults);
         }
+    }
+    private void showAlertDialog(String text) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Вы уверены что хотите очистить список?")
+                .setMessage(text)
+                .setCancelable(false)
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        swimmersList.clear();
+                        adapter.notifyDataSetChanged();
+                        saveSwimmersList();
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private boolean isValidate() {

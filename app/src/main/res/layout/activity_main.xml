@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Введите данные о заплыве:"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/editTextSurname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView"
+        android:layout_marginTop="16dp"
+        android:hint="Фамилия"
+        android:inputType="textPersonName"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextSurname"
+        android:layout_marginTop="8dp"
+        android:hint="Имя"
+        android:inputType="textPersonName"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/editTextBirthYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextName"
+        android:layout_marginTop="8dp"
+        android:hint="Год рождения"
+        android:inputType="number"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextBirthYear"
+        android:layout_marginTop="8dp"
+        android:hint="Время заплыва (сек)"
+        android:inputType="numberDecimal"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/buttonAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTime"
+        android:layout_marginTop="16dp"
+        android:text="Добавить"
+        android:layout_centerHorizontal="true"
+        android:onClick="onAddButtonClick" />
+    <EditText
+        android:id="@+id/editTextSearchYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonAdd"
+        android:layout_marginTop="16dp"
+        android:hint="Поиск по году рождения"
+        android:inputType="number"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/buttonSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextSearchYear"
+        android:layout_marginTop="8dp"
+        android:text="Найти"
+        android:layout_centerHorizontal="true"
+        android:onClick="onSearchButtonClick" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonSearch"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

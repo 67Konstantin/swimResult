@@ -111,11 +111,58 @@
         android:layout_centerHorizontal="true"
         android:onClick="onClearButtonClick" />
 
+    <RelativeLayout
+        android:id="@+id/rlInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonClear">
+
+        <TextView
+            android:id="@+id/textViewNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:textSize="12sp"
+            android:text="№"/>
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/textViewTime"
+            android:layout_toEndOf="@+id/textViewNumber"
+            android:textSize="16sp"
+            android:text="Фамилия Имя"/>
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/textViewBirthYear"
+            android:textAlignment="textEnd"
+            android:textSize="16sp"
+            android:text="мм.сс.СС"/>
+
+        <TextView
+            android:id="@+id/textViewBirthYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:textAlignment="textEnd"
+            android:textSize="12sp"
+            android:text="г.р."/>
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonClear"
+        android:layout_below="@id/rlInfo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp" />
 

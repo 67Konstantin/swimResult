@@ -142,10 +142,10 @@ public class MainActivity extends AppCompatActivity {
 
             adapter.notifyDataSetChanged();
             saveSwimmersList();
-//            editTextSurname.setText("");
-//            editTextName.setText("");
-//            editTextTime.setText("");
-//            editTextBirthYear.setText("");
+            editTextSurname.setText("");
+            editTextName.setText("");
+            editTextTime.setText("");
+            editTextBirthYear.setText("");
         }
     }
 

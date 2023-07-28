@@ -33,14 +33,14 @@ public class SwimmersAdapter extends RecyclerView.Adapter<SwimmersAdapter.ViewHo
         holder.textViewName.setText(swimmer.getSurname() + " " + swimmer.getName());
         String formattedTime = formatTime(swimmer.getTime());
         holder.textViewTime.setText(formattedTime);
-        holder.textViewBirthYear.setText("г.р.: " + swimmer.getBirthYear());
+        holder.textViewBirthYear.setText(swimmer.getBirthYear());
     }
 
     private String formatTime(double time) {
         int minutes = (int) time / 60;
         int seconds = (int) time % 60;
         int milliseconds = (int) ((time - (int) time) * 100);
-        return String.format("%02d:%02d.%02d", minutes, seconds, milliseconds);
+        return String.format("%02d.%02d.%02d", minutes, seconds, milliseconds);
     }
 
     @Override

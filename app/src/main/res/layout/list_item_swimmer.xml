@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,27 +15,24 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
-            android:layout_weight="0.5"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/textViewTime"
             android:layout_toEndOf="@+id/textViewNumber"
-            android:layout_weight="1"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textViewTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/textViewBirthYear"
-            android:layout_weight="1"
             android:textAlignment="textEnd"
             android:textSize="16sp" />
 
@@ -46,6 +43,6 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="0dp"
             android:textAlignment="textEnd"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
     </RelativeLayout>
 </LinearLayout>

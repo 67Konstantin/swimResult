@@ -38,9 +38,9 @@ public class SwimmersAdapter extends RecyclerView.Adapter<SwimmersAdapter.ViewHo
 
     private String formatTime(double time) {
         int minutes = (int) time / 60;
-            int seconds = (int) time % 60;
-            int milliseconds = (int) ((time - (int) time) * 100);
-            return String.format("%02d:%02d.%02d", minutes, seconds, milliseconds);
+        int seconds = (int) time % 60;
+        int milliseconds = (int) ((time - (int) time) * 100);
+        return String.format("%02d:%02d.%02d", minutes, seconds, milliseconds);
     }
 
     @Override

@@ -77,14 +77,15 @@
         android:layout_marginTop="8dp"
         android:gravity="center">
 
-        <EditText
+
+        <Spinner
             android:id="@+id/editTextGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:hint="Пол"
             android:layout_marginRight="12dp"
-            android:hint="Пол (м/ж)"
-            android:inputType="text" />
+            android:layout_centerHorizontal="true"
+            android:entries="@array/gender_options" />
 
         <EditText
             android:id="@+id/editTextDistance"

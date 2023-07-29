@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DashTimeTracker</string>
+
+    <string-array name="gender_options">
+        <item>м</item>
+        <item>ж</item>
+    </string-array>
 </resources>

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private SwimmersAdapter adapter;
     private SharedPreferences sharedPreferences;
     private static final String SHARED_PREFS_KEY = "swimmers_list_key";
-    EditText editTextSurname, editTextName, editTextTime, editTextBirthYear, editTextGender, editTextDistance;
+    EditText editTextSurname, editTextName, editTextTime, editTextBirthYear, editTextDistance;
+    Spinner editTextGender;
     String filterGender = "";
     String filterDistance = "";
     String filterBirthYear = "";
@@ -131,6 +133,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (editTextTime.getText().toString().isEmpty()) {
             editTextTime.setError("Введите");
             return false;
+        } else if (editTextDistance.getText().toString().isEmpty()) {
+            editTextTime.setError("Введите");
+            return false;
         } else return true;
     }
 
@@ -140,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             String surname = editTextSurname.getText().toString();
             String name = editTextName.getText().toString();
             String timeString = editTextTime.getText().toString();
-            String gender = editTextGender.getText().toString();
+            String gender = editTextGender.getSelectedItem().toString();
             String distance = editTextDistance.getText().toString();
             double time;
             String[] qwerty = timeString.split("\\.");
@@ -206,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 // Обработка фильтрации
                 filterBirthYear = ((EditText) dialogView.findViewById(R.id.editTextFilterBirthYear)).getText().toString();
                 filterDistance = ((EditText) dialogView.findViewById(R.id.editTextFilterDistance)).getText().toString();
-                filterGender = ((EditText) dialogView.findViewById(R.id.editTextFilterGender)).getText().toString();
+                filterGender = ((Spinner) dialogView.findViewById(R.id.editTextFilterGender)).getSelectedItem().toString();
 
                 List<Swimmer> filteredList = new ArrayList<>();
                 for (Swimmer swimmer : swimmersList) {

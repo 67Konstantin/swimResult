@@ -21,11 +21,12 @@
             android:layout_height="wrap_content"
             android:hint="Дистанция" />
 
-        <EditText
+        <Spinner
             android:id="@+id/editTextFilterGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Пол (м/ж)" />
+            android:hint="Пол"
+            android:entries="@array/gender_options" />
 
     </LinearLayout>
 

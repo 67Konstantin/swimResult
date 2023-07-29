@@ -2,11 +2,9 @@ package com.example.swim;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private static final String SHARED_PREFS_KEY = "swimmers_list_key";
     EditText editTextSurname, editTextName, editTextTime, editTextBirthYear, editTextGender, editTextDistance;
-    String filterGender="";
-    String filterDistance="";
-    String filterBirthYear="";
+    String filterGender = "";
+    String filterDistance = "";
+    String filterBirthYear = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
                         saveSwimmersList();
 
                         //Скидываем  параметры и показываем пустой список
-                        filterBirthYear="";
-                        filterDistance="";
-                        filterGender="";
+                        filterBirthYear = "";
+                        filterDistance = "";
+                        filterGender = "";
                         List<Swimmer> filteredList = new ArrayList<>();
                         for (Swimmer swimmer : swimmersList) {
                             if (filterBirthYear.isEmpty() || String.valueOf(swimmer.getBirthYear()).equals(filterBirthYear)) {

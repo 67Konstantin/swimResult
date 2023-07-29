@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private static final String SHARED_PREFS_KEY = "swimmers_list_key";
     EditText editTextSurname, editTextName, editTextTime, editTextBirthYear, editTextGender, editTextDistance;
-    String filterGender;
-    String filterDistance;
-    String filterBirthYear;
+    String filterGender="";
+    String filterDistance="";
+    String filterBirthYear="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +89,24 @@ public class MainActivity extends AppCompatActivity {
                         swimmersList.clear();
                         adapter.notifyDataSetChanged();
                         saveSwimmersList();
+
+                        //Скидываем  параметры и показываем пустой список
+                        filterBirthYear="";
+                        filterDistance="";
+                        filterGender="";
+                        List<Swimmer> filteredList = new ArrayList<>();
+                        for (Swimmer swimmer : swimmersList) {
+                            if (filterBirthYear.isEmpty() || String.valueOf(swimmer.getBirthYear()).equals(filterBirthYear)) {
+                                if (filterDistance.isEmpty() || swimmer.getDistance().equalsIgnoreCase(filterDistance)) {
+                                    if (filterGender.isEmpty() || swimmer.getGender().equalsIgnoreCase(filterGender)) {
+                                        filteredList.add(swimmer);
+                                    }
+                                }
+                            }
+                        }
+                        // Обновляем список в RecyclerView с учетом фильтров
+                        adapter.setSwimmersList(filteredList);
+
                         dialog.cancel();
                     }
                 })
@@ -142,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
             }
             String birthYear = editTextBirthYear.getText().toString();
 
-            Swimmer swimmer = new Swimmer(surname, name, time, birthYear, gender, distance);
-            swimmersList.add(swimmer);
+            Swimmer swimmer1 = new Swimmer(surname, name, time, birthYear, gender, distance);
+            swimmersList.add(swimmer1);
 
             // Сортировка списка по возрастанию времени заплыва
             Collections.sort(swimmersList, new Comparator<Swimmer>() {
@@ -155,18 +173,18 @@ public class MainActivity extends AppCompatActivity {
             // Применяем фильтры на обновленный список участников
 
 
-//            List<Swimmer> filteredList = new ArrayList<>();
-//            for (Swimmer swimmer1 : swimmersList) {
-//                if (filterBirthYear.isEmpty() || String.valueOf(swimmer.getBirthYear()).equals(filterBirthYear)) {
-//                    if (filterDistance.isEmpty() || swimmer.getDistance().equalsIgnoreCase(filterDistance)) {
-//                        if (filterGender.isEmpty() || swimmer.getGender().equalsIgnoreCase(filterGender)) {
-//                            filteredList.add(swimmer);
-//                        }
-//                    }
-//                }
-//            }
-//            // Обновляем список в RecyclerView с учетом фильтров
-//            adapter.setSwimmersList(filteredList);
+            List<Swimmer> filteredList = new ArrayList<>();
+            for (Swimmer swimmer : swimmersList) {
+                if (filterBirthYear.isEmpty() || String.valueOf(swimmer.getBirthYear()).equals(filterBirthYear)) {
+                    if (filterDistance.isEmpty() || swimmer.getDistance().equalsIgnoreCase(filterDistance)) {
+                        if (filterGender.isEmpty() || swimmer.getGender().equalsIgnoreCase(filterGender)) {
+                            filteredList.add(swimmer);
+                        }
+                    }
+                }
+            }
+            // Обновляем список в RecyclerView с учетом фильтров
+            adapter.setSwimmersList(filteredList);
 
 
             adapter.notifyDataSetChanged();
@@ -206,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setSwimmersList(filteredList);
             }
         });
-        builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Сбросить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Сброс фильтров и показ всех участников

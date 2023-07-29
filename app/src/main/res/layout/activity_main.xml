@@ -12,63 +12,94 @@
         android:layout_centerHorizontal="true"
         android:text="Введите данные о заплыве:"
         android:textSize="18sp" />
+
     <LinearLayout
         android:id="@+id/llName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView"
-        android:gravity="center"
-        android:layout_marginTop="8dp">
-    <EditText
-        android:id="@+id/editTextSurname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:hint="Фамилия"
-        android:inputType="textPersonName"
-        android:layout_marginRight="12dp"/>
+        android:layout_marginTop="8dp"
+        android:gravity="center">
 
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextSurname"
-        android:layout_centerHorizontal="true"
-        android:hint="Имя"
-        android:inputType="textPersonName" />
+        <EditText
+            android:id="@+id/editTextSurname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="12dp"
+            android:hint="Фамилия"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextSurname"
+            android:layout_centerHorizontal="true"
+            android:hint="Имя"
+            android:inputType="textPersonName" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/llGrTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/llName"
+        android:layout_marginTop="8dp"
         android:gravity="center">
-    <EditText
-        android:id="@+id/editTextBirthYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="4dp"
-        android:hint="г.р."
-        android:inputType="number"
-        android:layout_marginRight="12dp"/>
 
-    <EditText
-        android:id="@+id/editTextTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextBirthYear"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="4dp"
-        android:hint="Время"
-        android:inputType="numberDecimal"
-        android:digits="0123456789."/>
+        <EditText
+            android:id="@+id/editTextBirthYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="12dp"
+            android:hint="г.р."
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/editTextTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextBirthYear"
+            android:layout_centerHorizontal="true"
+            android:digits="0123456789."
+            android:hint="Время"
+            android:inputType="numberDecimal" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llGenDist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/llGrTime"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/editTextGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="12dp"
+            android:hint="Пол (м/ж)"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editTextDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:hint="Дистанция"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/buttonAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/llGrTime"
+        android:layout_below="@id/llGenDist"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:onClick="onAddButtonClick"
@@ -83,33 +114,26 @@
         android:layout_marginTop="8dp"
         android:gravity="center">
 
-        <EditText
-            android:id="@+id/editTextSearchYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:hint="Поиск по году рождения"
-            android:inputType="number"
-            android:layout_marginRight="4dp"/>
 
         <Button
             android:id="@+id/buttonSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editTextSearchYear"
             android:layout_centerHorizontal="true"
-            android:onClick="onSearchButtonClick"
-            android:text="Найти" />
+            android:onClick="onFilterButtonClick"
+            android:text="Применить фильтры" />
+<!--        android:onClick="onSearchButtonClick"-->
     </LinearLayout>
+
     <Button
         android:id="@+id/buttonClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/llsearch"
-        android:layout_marginTop="8dp"
-        android:text="Очистить список"
         android:layout_centerHorizontal="true"
-        android:onClick="onClearButtonClick" />
+        android:layout_marginTop="8dp"
+        android:onClick="onClearButtonClick"
+        android:text="Очистить список" />
 
     <RelativeLayout
         android:id="@+id/rlInfo"
@@ -123,8 +147,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
-            android:textSize="12sp"
-            android:text="№"/>
+            android:text="№"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textViewName"
@@ -134,8 +158,8 @@
             android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/textViewTime"
             android:layout_toEndOf="@+id/textViewNumber"
-            android:textSize="16sp"
-            android:text="Фамилия Имя"/>
+            android:text="Фамилия Имя"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textViewTime"
@@ -143,9 +167,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/textViewBirthYear"
+            android:text="мм.сс.СС"
             android:textAlignment="textEnd"
-            android:textSize="16sp"
-            android:text="мм.сс.СС"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textViewBirthYear"
@@ -153,9 +177,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="0dp"
+            android:text="г.р."
             android:textAlignment="textEnd"
-            android:textSize="12sp"
-            android:text="г.р."/>
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

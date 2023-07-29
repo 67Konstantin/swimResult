@@ -27,10 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private List<Swimmer> swimmersList = new ArrayList<>();
     private RecyclerView recyclerView;
     private SwimmersAdapter adapter;
-    private EditText editTextSearchYear;
     private SharedPreferences sharedPreferences;
     private static final String SHARED_PREFS_KEY = "swimmers_list_key";
-    EditText editTextSurname, editTextName, editTextTime, editTextBirthYear;
+    EditText editTextSurname, editTextName, editTextTime, editTextBirthYear, editTextGender, editTextDistance;
+    String filterGender;
+    String filterDistance;
+    String filterBirthYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sharedPreferences = getSharedPreferences(SHARED_PREFS_KEY, MODE_PRIVATE);
 
+        editTextDistance = findViewById(R.id.editTextDistance);
+        editTextGender = findViewById(R.id.editTextGender);
         editTextSurname = findViewById(R.id.editTextSurname);
         editTextName = findViewById(R.id.editTextName);
         editTextTime = findViewById(R.id.editTextTime);
         editTextBirthYear = findViewById(R.id.editTextBirthYear);
         recyclerView = findViewById(R.id.recyclerView);
-        editTextSearchYear = findViewById(R.id.editTextSearchYear);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SwimmersAdapter(swimmersList);
         recyclerView.setAdapter(adapter);
@@ -74,23 +78,6 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public void onSearchButtonClick(View view) {
-        String searchYearString = editTextSearchYear.getText().toString();
-        if (searchYearString.isEmpty()) {
-            // Если поле поиска пустое, показываем всех участников
-            adapter.setSwimmersList(swimmersList);
-        } else {
-            // Иначе, ищем участников по заданному году рождения
-
-            List<Swimmer> searchResults = new ArrayList<>();
-            for (Swimmer swimmer : swimmersList) {
-                if (swimmer.getBirthYear().equals(searchYearString)) {
-                    searchResults.add(swimmer);
-                }
-            }
-            adapter.setSwimmersList(searchResults);
-        }
-    }
     private void showAlertDialog(String text) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Вы уверены что хотите очистить список?")
@@ -137,13 +124,15 @@ public class MainActivity extends AppCompatActivity {
             String surname = editTextSurname.getText().toString();
             String name = editTextName.getText().toString();
             String timeString = editTextTime.getText().toString();
+            String gender = editTextGender.getText().toString();
+            String distance = editTextDistance.getText().toString();
             double time;
             String[] qwerty = timeString.split("\\.");
-            if (qwerty.length>2) {
+            if (qwerty.length > 2) {
                 // Время в формате мм:сс.СС
                 String[] timeParts = timeString.split("\\.");
                 int minutes = Integer.parseInt(timeParts[0]);
-                String abc = timeParts[1]+"."+timeParts[2];
+                String abc = timeParts[1] + "." + timeParts[2];
                 double seconds = Double.parseDouble(abc);
                 time = minutes * 60 + seconds;
             } else {
@@ -153,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             }
             String birthYear = editTextBirthYear.getText().toString();
 
-            Swimmer swimmer = new Swimmer(surname, name, time, birthYear);
+            Swimmer swimmer = new Swimmer(surname, name, time, birthYear, gender, distance);
             swimmersList.add(swimmer);
 
             // Сортировка списка по возрастанию времени заплыва
@@ -163,6 +152,22 @@ public class MainActivity extends AppCompatActivity {
                     return Double.compare(swimmer1.getTime(), swimmer2.getTime());
                 }
             });
+            // Применяем фильтры на обновленный список участников
+
+
+//            List<Swimmer> filteredList = new ArrayList<>();
+//            for (Swimmer swimmer1 : swimmersList) {
+//                if (filterBirthYear.isEmpty() || String.valueOf(swimmer.getBirthYear()).equals(filterBirthYear)) {
+//                    if (filterDistance.isEmpty() || swimmer.getDistance().equalsIgnoreCase(filterDistance)) {
+//                        if (filterGender.isEmpty() || swimmer.getGender().equalsIgnoreCase(filterGender)) {
+//                            filteredList.add(swimmer);
+//                        }
+//                    }
+//                }
+//            }
+//            // Обновляем список в RecyclerView с учетом фильтров
+//            adapter.setSwimmersList(filteredList);
+
 
             adapter.notifyDataSetChanged();
             saveSwimmersList();
@@ -171,7 +176,46 @@ public class MainActivity extends AppCompatActivity {
             editTextTime.setText("");
             editTextBirthYear.setText("");
         }
+
     }
+
+    public void onFilterButtonClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
+        builder.setView(dialogView);
+        builder.setTitle("Фильтры");
+        builder.setPositiveButton("Применить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Обработка фильтрации
+                filterBirthYear = ((EditText) dialogView.findViewById(R.id.editTextFilterBirthYear)).getText().toString();
+                filterDistance = ((EditText) dialogView.findViewById(R.id.editTextFilterDistance)).getText().toString();
+                filterGender = ((EditText) dialogView.findViewById(R.id.editTextFilterGender)).getText().toString();
+
+                List<Swimmer> filteredList = new ArrayList<>();
+                for (Swimmer swimmer : swimmersList) {
+                    if (filterBirthYear.isEmpty() || String.valueOf(swimmer.getBirthYear()).equals(filterBirthYear)) {
+                        if (filterDistance.isEmpty() || swimmer.getDistance().equalsIgnoreCase(filterDistance)) {
+                            if (filterGender.isEmpty() || swimmer.getGender().equalsIgnoreCase(filterGender)) {
+                                filteredList.add(swimmer);
+                            }
+                        }
+                    }
+                }
+
+                adapter.setSwimmersList(filteredList);
+            }
+        });
+        builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Сброс фильтров и показ всех участников
+                adapter.setSwimmersList(swimmersList);
+            }
+        });
+        builder.show();
+    }
+
 
     class Swimmer {
         private String surname;
@@ -179,11 +223,17 @@ public class MainActivity extends AppCompatActivity {
         private double time;
         private String birthYear;
 
-        public Swimmer(String surname, String name, double time, String birthYear) {
+        private String gender;   // Пол (м или ж)
+        private String distance; // Дистанция
+
+
+        public Swimmer(String surname, String name, double time, String birthYear, String gender, String distance) {
             this.surname = surname;
             this.name = name;
             this.time = time;
             this.birthYear = birthYear;
+            this.gender = gender;
+            this.distance = distance;
         }
 
         public String getSurname() {
@@ -200,6 +250,22 @@ public class MainActivity extends AppCompatActivity {
 
         public String getBirthYear() {
             return birthYear;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
         }
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editTextFilterBirthYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Год рождения" />
+
+        <EditText
+            android:id="@+id/editTextFilterDistance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Дистанция" />
+
+        <EditText
+            android:id="@+id/editTextFilterGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Пол (м/ж)" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -172,11 +172,10 @@ public class MainActivity extends AppCompatActivity {
         isEditMode = !isEditMode;
         if (isEditMode) {
             // Включение режима редактирования
-            view.setBackgroundColor(getResources().getColor(R.color.light_blue_80BFFF));
-
+            view.setBackgroundResource(R.drawable.edit_light);
         } else {
             // Отключение режима редактирования
-            view.setBackgroundColor(getResources().getColor(R.color.blue_0077ff));
+            view.setBackgroundResource(R.drawable.baseline_edit_24);
 
         }
     }

@@ -107,49 +107,50 @@
         android:text="Добавить" />
 
     <LinearLayout
+        android:background="@drawable/rectangle"
         android:id="@+id/llsearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_below="@id/buttonAdd"
         android:layout_marginTop="8dp"
-        android:gravity="center">
-
-
-        <Button
+        android:gravity="right">
+        <ImageButton
+            android:background="@drawable/data_cleaning"
+            android:id="@+id/buttonClear"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClearButtonClick"
+            android:text="Очистить список" />
+        <ImageButton
             android:id="@+id/buttonSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:onClick="onFilterButtonClick"
-            android:text="Применить фильтры" />
-        <!--        android:onClick="onSearchButtonClick"-->
-    </LinearLayout>
-    <Button
+            android:text="Применить фильтры"
+            android:background="@drawable/filter__1_"
+            android:layout_marginHorizontal="8dp"/>
+        <ImageButton
         android:id="@+id/btnEditMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/llsearch"
-        android:layout_marginTop="8dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:text="Редактировать"
+        android:background="@drawable/baseline_edit_24"
         android:layout_centerHorizontal="true"
         android:onClick="toggleEditMode" />
 
-    <Button
-        android:id="@+id/buttonClear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnEditMode"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:onClick="onClearButtonClick"
-        android:text="Очистить список" />
+    </LinearLayout>
+
+
+
+
 
     <RelativeLayout
         android:id="@+id/rlInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonClear">
+        android:layout_below="@id/llsearch">
 
         <TextView
             android:id="@+id/textViewNumber"

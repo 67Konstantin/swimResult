@@ -1,12 +1,17 @@
 package com.example.swim;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private SwimmersAdapter adapter;
     private SharedPreferences sharedPreferences;
     private static final String SHARED_PREFS_KEY = "swimmers_list_key";
+    public static boolean isEditMode = false;
     EditText editTextSurname, editTextName, editTextTime, editTextBirthYear, editTextDistance;
     Spinner editTextGender;
     String filterGender = "";
@@ -51,7 +58,122 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SwimmersAdapter(swimmersList);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (isEditMode) {
+                        View childView = rv.findChildViewUnder(e.getX(), e.getY());
+                        if (childView != null) {
+                            int position = rv.getChildAdapterPosition(childView);
+                            editSwimmerDialog(position);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+            }
+        });
         restoreSwimmersList();
+    }
+
+    // Метод для редактирования участника в списке
+    @SuppressLint("MissingInflatedId")
+    void editSwimmerDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.edit_swimmer_dialog, null);
+        builder.setView(dialogView);
+        builder.setTitle("Редактировать участника");
+        Swimmer swimmerToEdit = swimmersList.get(position);
+
+        EditText editTextSurname = dialogView.findViewById(R.id.editTextEditSurname);
+        EditText editTextName = dialogView.findViewById(R.id.editTextEditName);
+        EditText editTextTime = dialogView.findViewById(R.id.editTextEditTime);
+        EditText editTextBirthYear = dialogView.findViewById(R.id.editTextEditBirthYear);
+        Spinner editTextGender = dialogView.findViewById(R.id.editTextEditGender);
+        EditText editTextDistance = dialogView.findViewById(R.id.editTextEditDistance);
+        int index;
+        if(Objects.equals(swimmerToEdit.getGender(), "м")||Objects.equals(swimmerToEdit.getGender(), "М")) {index = 1;}
+        else {index = 2;}
+        // Заполнение полей данными выбранного участника
+        editTextSurname.setText(swimmerToEdit.getSurname());
+        editTextName.setText(swimmerToEdit.getName());
+        editTextTime.setText(String.valueOf(swimmerToEdit.getTime()));
+        editTextBirthYear.setText(String.valueOf(swimmerToEdit.getBirthYear()));
+
+        editTextGender.setSelection(1);
+        Log.d("123321", editTextGender.getSelectedItem().toString());
+        editTextDistance.setText(String.valueOf(swimmerToEdit.getDistance()));
+
+        builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Обработка сохранения изменений
+                String surname = editTextSurname.getText().toString();
+                String name = editTextName.getText().toString();
+                double time = Double.parseDouble(editTextTime.getText().toString());
+                String birthYear = editTextBirthYear.getText().toString();
+                String distance = editTextDistance.getText().toString();
+                String gender = editTextGender.getSelectedItem().toString();
+                //Меняю класс на новый
+                swimmerToEdit.setSurname(surname);
+                swimmerToEdit.setName(name);
+                swimmerToEdit.setTime(time);
+                swimmerToEdit.setBirthYear(birthYear);
+                swimmerToEdit.setDistance(distance);
+                swimmerToEdit.setGender(gender);
+
+                Collections.sort(swimmersList, new Comparator<Swimmer>() {
+                    @Override
+                    public int compare(Swimmer swimmer1, Swimmer swimmer2) {
+                        return Double.compare(swimmer1.getTime(), swimmer2.getTime());
+                    }
+                });
+
+                adapter.notifyDataSetChanged();
+                saveSwimmersList();
+            }
+        });
+        builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Ничего не делаем при нажатии "Отмена"
+            }
+        });
+        builder.setNeutralButton("Удалить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Удаление участника из списка
+                swimmersList.remove(position);
+                adapter.notifyDataSetChanged();
+                saveSwimmersList();
+            }
+        });
+
+        builder.show();
+        //Toast.makeText(this, swimmerToEdit.getGender(), Toast.LENGTH_SHORT).show();
+    }
+
+    // Метод для активации/деактивации режима редактирования
+    public void toggleEditMode(View view) {
+        isEditMode = !isEditMode;
+        if (isEditMode) {
+            // Включение режима редактирования
+            view.setBackgroundColor(getResources().getColor(R.color.light_blue_80BFFF));
+
+        } else {
+            // Отключение режима редактирования
+            view.setBackgroundColor(getResources().getColor(R.color.blue_0077ff));
+
+        }
     }
 
     private void restoreSwimmersList() {
@@ -134,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
             editTextTime.setError("Введите");
             return false;
         } else if (editTextDistance.getText().toString().isEmpty()) {
-            editTextTime.setError("Введите");
+            editTextDistance.setError("Введите");
             return false;
         } else return true;
     }
@@ -287,6 +409,22 @@ public class MainActivity extends AppCompatActivity {
 
         public void setDistance(String distance) {
             this.distance = distance;
+        }
+
+        public void setSurname(String surname) {
+            this.surname = surname;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setTime(double time) {
+            this.time = time;
+        }
+
+        public void setBirthYear(String birthYear) {
+            this.birthYear = birthYear;
         }
     }
 }

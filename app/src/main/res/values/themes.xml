@@ -13,5 +13,4 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <color name="blue_0077ff">#0077ff</color>
 </resources>

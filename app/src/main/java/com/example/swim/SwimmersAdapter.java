@@ -3,6 +3,7 @@ package com.example.swim;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,23 @@ public class SwimmersAdapter extends RecyclerView.Adapter<SwimmersAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_swimmer, parent, false);
-        return new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
+        // Обработка элементов в режиме редактирования
+        if (MainActivity.isEditMode) {
+            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int position = viewHolder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        MainActivity activity = (MainActivity) v.getContext();
+                        activity.editSwimmerDialog(position);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
+        return viewHolder;
     }
 
     @Override

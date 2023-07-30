@@ -100,17 +100,22 @@ public class MainActivity extends AppCompatActivity {
         EditText editTextBirthYear = dialogView.findViewById(R.id.editTextEditBirthYear);
         Spinner editTextGender = dialogView.findViewById(R.id.editTextEditGender);
         EditText editTextDistance = dialogView.findViewById(R.id.editTextEditDistance);
+
+        String[] gender_options = getResources().getStringArray(R.array.gender_options);
         int index;
-        if(Objects.equals(swimmerToEdit.getGender(), "м")||Objects.equals(swimmerToEdit.getGender(), "М")) {index = 1;}
-        else {index = 2;}
+        if (editTextGender.getSelectedItem().equals(swimmerToEdit.getGender())) {
+            index = 0;
+        } else {
+            index = 1;
+        }
+
+
         // Заполнение полей данными выбранного участника
         editTextSurname.setText(swimmerToEdit.getSurname());
         editTextName.setText(swimmerToEdit.getName());
         editTextTime.setText(String.valueOf(swimmerToEdit.getTime()));
         editTextBirthYear.setText(String.valueOf(swimmerToEdit.getBirthYear()));
-
-        editTextGender.setSelection(1);
-        Log.d("123321", editTextGender.getSelectedItem().toString());
+        editTextGender.setSelection(index);
         editTextDistance.setText(String.valueOf(swimmerToEdit.getDistance()));
 
         builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
